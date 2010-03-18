@@ -443,10 +443,22 @@ class atkManyToOneRelation extends atkRelation
    */
   public function setListColumns()
   {
-    $attrs = func_get_args();
     $this->m_listColumns = array();
-    foreach ($attrs as $attr)
-    $this->m_listColumns[] = $attr;
+
+    $attrs = func_get_args();
+    if (count($attrs)===1 && is_array($attrs[0]))
+    {
+      $columns = $attrs[0];
+    }
+    else
+    {
+      $columns = $attrs;
+    }
+    
+    foreach ($columns as $column)
+    {
+      $this->m_listColumns[] = $column;
+    }
     return $this;
   }
 
@@ -1913,11 +1925,7 @@ class atkManyToOneRelation extends atkRelation
    */
   public function addToListArrayHeader($action, &$arr, $fieldprefix, $flags, $atksearch, $atkorderby, $grid=null, $listcolumn='*')
   {
-    if ($listcolumn!=='*')
-    {
-      $this->addColumnToListArrayHeader($listcolumn, $action, $arr, $fieldprefix, $flags, $atksearch, $atkorderby, $grid);
-    }
-    else
+    if ($listcolumn==='*')
     {
       $this->addColumnToListArrayHeader($this->fieldName(), $action, $arr, $fieldprefix, $flags, $atksearch, $atkorderby, $grid);
 
@@ -1929,6 +1937,10 @@ class atkManyToOneRelation extends atkRelation
       {
         $this->addColumnToListArrayHeader($attribname, $action, $arr, $fieldprefix, $flags, $atksearch, $atkorderby, $grid);
       }
+    }
+    else
+    {
+      $this->addColumnToListArrayHeader($listcolumn, $action, $arr, $fieldprefix, $flags, $atksearch, $atkorderby, $grid);
     }
   }
 
