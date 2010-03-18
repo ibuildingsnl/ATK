@@ -65,7 +65,7 @@ class atkSelectHandler extends atkActionHandler
     $grid->removeFlag(atkDataGrid::MULTI_RECORD_PRIORITY_ACTIONS);
     $grid->setDefaultActions($actions);
 
-    $node->modifyDataGrid($grid, atkDataGrid::CREATE);
+    $this->modifyDataGrid($grid, atkDataGrid::CREATE);
     
     if ($this->autoSelectRecord($grid))
     {
@@ -101,17 +101,17 @@ class atkSelectHandler extends atkActionHandler
     atkimport('atk.datagrid.atkdatagrid');
     try
     {
-      $grid = atkDataGrid::resume($this->getNode())->render();
+      $grid = atkDataGrid::resume($this->getNode());
 
-      $this->getNode()->modifyDataGrid($grid, atkDataGrid::RESUME);
+      $this->modifyDataGrid($grid, atkDataGrid::RESUME);
     }
     catch (Exception $e)
     {
-      $grid = atkDataGrid::create($this->getNode())->render();
+      $grid = atkDataGrid::create($this->getNode());
       
-      $this->getNode()->modifyDataGrid($grid, atkDataGrid::RESUME);
+      $this->modifyDataGrid($grid, atkDataGrid::RESUME);
     }
-    return $grid;
+    return $grid->render();
   }
 
   /**
